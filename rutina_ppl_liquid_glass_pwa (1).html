@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  
+  <!-- Apple iOS / iPhone 11 PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="PPL · Vino" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#F7F4F5" />
+  <meta name="description" content="Rutina Pierna Empuje Jalón 6 días con checklist de series y cronómetro de descanso de 3 minutos." />
+
+  <title>PPL · Vino — Rutina 6 Días</title>
+
+  <!-- Dynamic Apple Touch Icon & Web Manifest (Inline SVG Data URI, sin dependencias externas) -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%237A0E29'/%3E%3Cstop offset='100%25' stop-color='%233A0512'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='40' fill='url(%23g)'/%3E%3Crect x='14' y='14' width='152' height='152' rx='30' fill='none' stroke='rgba(255,255,255,0.28)' stroke-width='2'/%3E%3Ctext x='90' y='103' font-family='-apple-system,BlinkMacSystemFont,sans-serif' font-size='54' font-weight='800' fill='%23FFFFFF' text-anchor='middle' letter-spacing='-2'%3EPPL%3C/text%3E%3Ccircle cx='90' cy='132' r='5' fill='rgba(255,255,255,0.7)'/%3E%3C/svg%3E" />
+  <link id="pwa-manifest" rel="manifest" href="" />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'sans-serif'],
+          },
+          colors: {
+            wine: {
+              50: '#FDF2F4',
+              100: '#FCE7EB',
+              200: '#F8D0D9',
+              500: '#9B1B3B',
+              600: '#780F2A',
+              700: '#5E0A20',
+              800: '#450616',
+              900: '#2E030E',
+            },
+            obsidian: {
+              900: '#0D0B0C',
+              800: '#1C181A',
+              700: '#2E282B',
+              500: '#645B5F',
+              400: '#8E8489',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg-alabaster: #F7F4F5;
+      --ink-black: #0D0B0C;
+      --wine-primary: #6E0D25;
+      --wine-deep: #480617;
+      --wine-tint: rgba(110, 13, 37, 0.08);
+      --safe-top: env(safe-area-inset-top, 20px);
+      --safe-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-alabaster);
+      color: var(--ink-black);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100dvh;
+    }
+
+    /* Tabular numbers for zero layout jitter on countdown & sets */
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Luminous Crystal Backdrop so ultra-transparent Liquid Glass refracts light visibly */
+    .ambient-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 12% 6%, rgba(255, 255, 255, 1) 0%, rgba(248, 241, 243, 0.92) 38%, rgba(235, 222, 227, 0.96) 100%);
+    }
+
+    @keyframes floatCaustic {
+      0%, 100% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(-14px, 18px, 0) scale(1.06);
+      }
+    }
+
+    .orb-wine-top {
+      position: absolute;
+      top: -60px;
+      right: -45px;
+      width: 320px;
+      height: 320px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 35% 35%, rgba(155, 27, 59, 0.28) 0%, rgba(110, 13, 37, 0.12) 48%, transparent 74%);
+      filter: blur(18px);
+      animation: floatCaustic 11s ease-in-out infinite;
+    }
+
+    .orb-obsidian-mid {
+      position: absolute;
+      top: 34%;
+      left: -85px;
+      width: 300px;
+      height: 300px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.98) 0%, rgba(110, 13, 37, 0.14) 52%, transparent 75%);
+      filter: blur(20px);
+    }
+
+    .orb-wine-bottom {
+      position: absolute;
+      bottom: -40px;
+      right: -30px;
+      width: 340px;
+      height: 340px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 40% 40%, rgba(120, 15, 42, 0.24) 0%, rgba(255, 255, 255, 0.75) 55%, transparent 76%);
+      filter: blur(18px);
+      animation: floatCaustic 14s ease-in-out infinite reverse;
+    }
+
+    .crystal-ribbon {
+      position: absolute;
+      top: 18%;
+      right: 10%;
+      width: 240px;
+      height: 240px;
+      border-radius: 9999px;
+      background: conic-gradient(from 140deg, rgba(255,255,255,0.95), rgba(155,27,59,0.16), rgba(255,255,255,0.9), rgba(13,11,12,0.06), rgba(255,255,255,0.95));
+      filter: blur(24px);
+      opacity: 0.85;
+    }
+
+    /* Ultra-Transparent & Glossy Liquid Glass Surfaces */
+    .liquid-glass {
+      position: relative;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.44) 0%,
+        rgba(255, 255, 255, 0.18) 48%,
+        rgba(255, 255, 255, 0.34) 100%
+      );
+      backdrop-filter: blur(24px) saturate(215%) brightness(1.05);
+      -webkit-backdrop-filter: blur(24px) saturate(215%) brightness(1.05);
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      box-shadow:
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.98),
+        inset 1px 0 1px rgba(255, 255, 255, 0.65),
+        inset 0 -1.5px 2px rgba(110, 13, 37, 0.08),
+        0 12px 32px -12px rgba(13, 11, 12, 0.12),
+        0 2px 6px -1px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Specular glass sheen reflection */
+    .liquid-glass::before,
+    .liquid-glass-strong::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(
+        125deg,
+        rgba(255, 255, 255, 0.62) 0%,
+        rgba(255, 255, 255, 0.12) 28%,
+        rgba(255, 255, 255, 0.0) 56%,
+        rgba(255, 255, 255, 0.24) 100%
+      );
+      z-index: 0;
+    }
+
+    .liquid-glass > *,
+    .liquid-glass-strong > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .liquid-glass-strong {
+      position: relative;
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.56) 0%,
+        rgba(255, 255, 255, 0.26) 52%,
+        rgba(255, 255, 255, 0.46) 100%
+      );
+      backdrop-filter: blur(32px) saturate(230%) brightness(1.06);
+      -webkit-backdrop-filter: blur(32px) saturate(230%) brightness(1.06);
+      border: 1px solid rgba(255, 255, 255, 0.92);
+      box-shadow:
+        inset 0 2px 1.5px rgba(255, 255, 255, 1),
+        inset 0 -1.5px 3px rgba(110, 13, 37, 0.10),
+        0 -8px 32px -6px rgba(13, 11, 12, 0.09),
+        0 18px 38px -8px rgba(110, 13, 37, 0.16);
+    }
+
+    .liquid-glass-pill {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.22) 100%);
+      backdrop-filter: blur(14px) saturate(190%);
+      -webkit-backdrop-filter: blur(14px) saturate(190%);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.95),
+        0 4px 12px -4px rgba(13, 11, 12, 0.08);
+    }
+
+    .liquid-glass-wine {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(138, 18, 48, 0.88) 0%, rgba(72, 6, 23, 0.94) 100%);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      box-shadow:
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.55),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.35),
+        0 12px 26px -6px rgba(110, 13, 37, 0.44);
+    }
+
+    .liquid-glass-wine::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(120deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.04) 45%, transparent 70%);
+    }
+
+    .liquid-glass-obsidian {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(32, 26, 29, 0.90) 0%, rgba(13, 11, 12, 0.95) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.34),
+        0 10px 24px -6px rgba(13, 11, 12, 0.32);
+    }
+
+    /* Tactile spring press */
+    .tactile-btn {
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .tactile-btn:active {
+      transform: scale(0.975);
+    }
+
+    /* Safe area helpers */
+    .pt-safe {
+      padding-top: max(16px, var(--safe-top));
+    }
+    .pb-safe-dock {
+      padding-bottom: calc(140px + var(--safe-bottom));
+    }
+    .bottom-dock-safe {
+      padding-bottom: max(14px, var(--safe-bottom));
+    }
+
+    /* Timer alarm pulse animation */
+    @keyframes winePulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(110, 13, 37, 0.45), 0 14px 32px -6px rgba(110, 13, 37, 0.35);
+      }
+      50% {
+        box-shadow: 0 0 0 14px rgba(110, 13, 37, 0), 0 14px 32px -6px rgba(110, 13, 37, 0.5);
+      }
+    }
+    .alarm-ringing {
+      animation: winePulse 1.15s infinite ease-in-out;
+    }
+
+    /* Smooth view entrance */
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-enter {
+      animation: fadeSlideUp 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Hide scrollbar cleanly */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="selection:bg-wine-600 selection:text-white">
+  <!-- Ambient Refraction Background -->
+  <div class="ambient-canvas" aria-hidden="true">
+    <div class="orb-wine-top"></div>
+    <div class="crystal-ribbon"></div>
+    <div class="orb-obsidian-mid"></div>
+    <div class="orb-wine-bottom"></div>
+  </div>
+
+  <!-- Main App Shell (Optimized for iPhone 11 414x896 & responsive viewports) -->
+  <div id="app" class="relative z-10 mx-auto w-full max-w-[440px] min-h-[100dvh] flex flex-col">
+    
+    <!-- Sticky Top Liquid Glass Header -->
+    <header class="sticky top-0 z-30 pt-safe px-4 pb-3">
+      <div class="liquid-glass rounded-[26px] px-4 py-3 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <!-- Back to Day Selector button (visible when inside a workout day) -->
+          <button
+            id="btn-back-days"
+            type="button"
+            onclick="showDaySelector()"
+            aria-label="Cambiar día de entrenamiento"
+            class="hidden tactile-btn liquid-glass-pill w-9 h-9 rounded-full flex items-center justify-center text-obsidian-900 shrink-0"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-wine-600 shadow-[0_0_8px_rgba(110,13,37,0.7)]"></span>
+              <span id="header-kicker" class="text-[10px] font-bold uppercase tracking-[0.16em] text-wine-700 truncate">
+                RUTINA PPL · 6 DÍAS
+              </span>
+            </div>
+            <h1 id="header-title" class="text-[20px] font-extrabold tracking-tight text-obsidian-900 truncate leading-tight mt-0.5">
+              Selecciona tu día
+            </h1>
+          </div>
+        </div>
+
+        <!-- Right Quick Action Icons: Sound Test / Rules / Install PWA -->
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button
+            id="btn-sound-toggle"
+            type="button"
+            onclick="toggleSound()"
+            title="Activar/Probar sonido del cronómetro"
+            class="tactile-btn liquid-glass-pill w-9 h-9 rounded-full flex items-center justify-center text-obsidian-900"
+          >
+            <!-- Speaker Icon injected via JS -->
+          </button>
+          <button
+            type="button"
+            onclick="openModal('modal-guide')"
+            title="Guía y volumen semanal"
+            class="tactile-btn liquid-glass-pill w-9 h-9 rounded-full flex items-center justify-center text-obsidian-900"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onclick="openModal('modal-pwa')"
+            title="Instalar en iPhone"
+            class="tactile-btn liquid-glass-obsidian w-9 h-9 rounded-full text-white flex items-center justify-center"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Toast Notification Banner (Replaces alert/confirm) -->
+    <div id="toast-container" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[400px] pointer-events-none transition-all duration-300 opacity-0 -translate-y-2">
+      <div class="liquid-glass-obsidian text-white rounded-2xl px-4 py-3 flex items-center justify-between gap-3 shadow-xl">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2 h-2 rounded-full bg-wine-500 shrink-0"></span>
+          <p id="toast-message" class="text-xs font-medium leading-snug"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 1: INITIAL DAY SELECTOR -->
+    <main id="view-selector" class="flex-1 px-4 pt-1 pb-safe-dock animate-enter">
+      <!-- Intro Hero Card -->
+      <div class="liquid-glass rounded-[30px] p-5 mb-4 overflow-hidden">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <span class="liquid-glass-pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.12em] text-wine-700 mb-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-wine-600"></span>
+              Hipertrofia · RIR 1–3
+            </span>
+            <h2 class="text-[24px] font-extrabold tracking-tight text-obsidian-900 leading-[1.15]">
+              ¿Qué entrenamos hoy?
+            </h2>
+            <p class="text-[12.5px] text-obsidian-700 mt-1.5 leading-relaxed">
+              Elige tu sesión para abrir el checklist de series y el cronómetro de descanso de 3 minutos.
+            </p>
+          </div>
+        </div>
+
+        <!-- Today Suggestion Pill -->
+        <div id="today-suggestion-box" class="mt-4 pt-3.5 border-t border-white/60 flex items-center justify-between gap-2">
+          <!-- Populated dynamically based on current day of week -->
+        </div>
+      </div>
+
+      <!-- Days Grid / Stack -->
+      <div class="flex items-center justify-between px-1.5 mb-2.5">
+        <span class="text-[10px] font-bold uppercase tracking-[0.16em] text-obsidian-700">
+          Plan Semanal (Lunes a Domingo)
+        </span>
+        <span class="text-[11px] font-bold text-wine-700">
+          6 días + cardio
+        </span>
+      </div>
+
+      <div id="days-list" class="space-y-3">
+        <!-- Day cards injected by JS -->
+      </div>
+    </main>
+
+    <!-- VIEW 2: ACTIVE WORKOUT CHECKLIST -->
+    <main id="view-workout" class="hidden flex-1 px-4 pt-1 pb-safe-dock animate-enter">
+      <!-- Workout Summary & Progress Card -->
+      <div class="liquid-glass rounded-[30px] p-4.5 p-5 mb-4">
+        <div class="flex items-center justify-between gap-2 mb-2.5">
+          <div>
+            <span id="workout-day-badge" class="inline-block text-[10px] font-bold uppercase tracking-[0.16em] text-wine-700">
+              LUNES
+            </span>
+            <h2 id="workout-day-focus" class="text-[21px] font-extrabold tracking-tight text-obsidian-900 leading-tight mt-0.5">
+              Pierna 1 · Cuádriceps
+            </h2>
+          </div>
+          <div class="text-right shrink-0">
+            <div id="workout-progress-text" class="text-[22px] font-extrabold tabular-nums text-obsidian-900 leading-none">
+              0%
+            </div>
+            <div id="workout-progress-count" class="text-[11px] font-semibold text-obsidian-700 tabular-nums mt-1">
+              0 de 7 listos
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full h-2.5 rounded-full bg-white/45 border border-white/75 overflow-hidden p-0.5">
+          <div
+            id="workout-progress-bar"
+            class="h-full rounded-full transition-all duration-500 ease-out"
+            style="width: 0%; background: linear-gradient(90deg, #0D0B0C 0%, #7A0F2A 100%);"
+          ></div>
+        </div>
+
+        <!-- Sub-actions: Reset Day & RIR reminder -->
+        <div class="mt-3 pt-2.5 border-t border-white/60 flex items-center justify-between gap-2">
+          <span class="text-[11px] font-medium text-obsidian-700">
+            Termina cada serie con <strong class="text-obsidian-900">1–3 RIR</strong>
+          </span>
+
+          <div id="reset-controls" class="flex items-center gap-1.5">
+            <button
+              id="btn-reset-prompt"
+              type="button"
+              onclick="askResetDay()"
+              class="tactile-btn liquid-glass-pill text-[11px] font-semibold text-obsidian-800 hover:text-wine-700 px-3 py-1 rounded-full"
+            >
+              Reiniciar día
+            </button>
+            <div id="reset-confirm-group" class="hidden flex items-center gap-1">
+              <button
+                type="button"
+                onclick="confirmResetDay()"
+                class="tactile-btn text-[11px] font-bold text-white bg-wine-600 px-2.5 py-1 rounded-full shadow-sm"
+              >
+                Confirmar
+              </button>
+              <button
+                type="button"
+                onclick="cancelResetDay()"
+                class="tactile-btn liquid-glass-pill text-[11px] font-semibold text-obsidian-800 px-2.5 py-1 rounded-full"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exercise Checklist Container -->
+      <div id="exercises-list" class="space-y-3">
+        <!-- Exercises injected by JS -->
+      </div>
+    </main>
+
+    <!-- FLOATING BOTTOM LIQUID GLASS DOCK: 3-MINUTE REST TIMER -->
+    <div class="fixed bottom-0 left-0 right-0 z-40 px-3 bottom-dock-safe pointer-events-none">
+      <div id="timer-dock" class="mx-auto w-full max-w-[424px] liquid-glass-strong rounded-[30px] p-3 pointer-events-auto transition-all duration-300">
+        
+        <!-- IDLE STATE: Big 1-Tap 3:00 Rest Timer Button -->
+        <div id="timer-idle-view" class="flex items-center justify-between gap-3">
+          <div class="pl-2.5 min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-wine-600"></span>
+              <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-obsidian-700">
+                Descanso entre series
+              </span>
+            </div>
+            <div class="text-[23px] font-extrabold tracking-tight tabular-nums text-obsidian-900 leading-tight">
+              03:00 <span class="text-xs font-semibold text-obsidian-700">min</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onclick="startRestTimer(180)"
+            class="tactile-btn liquid-glass-wine text-white rounded-[22px] px-5 py-3.5 flex items-center gap-2.5 shrink-0 cursor-pointer"
+          >
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+              <circle cx="12" cy="13" r="8" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4l2.5 2.5M9 2h6" />
+            </svg>
+            <span class="text-[15px] font-bold tracking-tight">Iniciar 3 min</span>
+          </button>
+        </div>
+
+        <!-- ACTIVE / RINGING STATE: Live Countdown + Controls -->
+        <div id="timer-active-view" class="hidden">
+          <div class="flex items-center justify-between gap-2">
+            <!-- Circular Progress + Time -->
+            <div class="flex items-center gap-3 pl-1">
+              <div class="relative w-12 h-12 flex items-center justify-center shrink-0">
+                <svg class="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
+                  <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(13,11,12,0.08)" stroke-width="4" />
+                  <circle
+                    id="timer-ring-progress"
+                    cx="24"
+                    cy="24"
+                    r="20"
+                    fill="none"
+                    stroke="#6E0D25"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-dasharray="125.66"
+                    stroke-dashoffset="0"
+                    class="transition-all duration-200"
+                  />
+                </svg>
+                <span id="timer-status-icon" class="text-wine-600">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                  </svg>
+                </span>
+              </div>
+
+              <div>
+                <div id="timer-label" class="text-[11px] font-bold uppercase tracking-[0.1em] text-wine-600">
+                  Recuperando serie...
+                </div>
+                <div id="timer-display" class="text-[28px] font-extrabold tracking-tight tabular-nums text-obsidian-900 leading-none mt-0.5">
+                  03:00
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button
+                id="btn-timer-plus"
+                type="button"
+                onclick="addTimerSeconds(30)"
+                class="tactile-btn liquid-glass-pill h-11 px-3 rounded-[16px] text-obsidian-900 text-xs font-bold tabular-nums"
+              >
+                +30s
+              </button>
+              <button
+                id="btn-timer-restart"
+                type="button"
+                onclick="startRestTimer(180)"
+                title="Reiniciar 3 minutos"
+                class="tactile-btn liquid-glass-pill w-11 h-11 rounded-[16px] text-obsidian-900 flex items-center justify-center"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </button>
+              <button
+                id="btn-timer-stop"
+                type="button"
+                onclick="stopRestTimer()"
+                class="tactile-btn h-11 px-3.5 rounded-[16px] liquid-glass-obsidian text-white text-xs font-bold"
+              >
+                Listo
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 1: WEEKLY VOLUME, CARDIO & RULES GUIDE (From PDF Page 2 & 3) -->
+  <div id="modal-guide" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 bg-black/25 backdrop-blur-md">
+    <div class="liquid-glass-strong w-full max-w-[420px] max-h-[85dvh] rounded-[32px] overflow-hidden flex flex-col animate-enter">
+      <div class="px-5 pt-5 pb-3 border-b border-white/60 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-[0.16em] text-wine-700">Protocolo Completo</span>
+          <h3 class="text-[19px] font-extrabold tracking-tight text-obsidian-900 leading-tight">Reglas, Cardio y Volumen</h3>
+        </div>
+        <button
+          type="button"
+          onclick="closeModal('modal-guide')"
+          class="tactile-btn liquid-glass-pill w-9 h-9 rounded-full flex items-center justify-center text-obsidian-900"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-4 text-sm">
+        <!-- Cardio Weekly -->
+        <div class="rounded-2xl bg-white/45 border border-white/75 p-4">
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="w-2 h-2 rounded-full bg-wine-600"></span>
+            <h4 class="text-sm font-bold text-obsidian-900">Cardio Semanal</h4>
+          </div>
+          <p class="text-xs text-obsidian-800 leading-relaxed">
+            <strong>3 sesiones de 25–30 min</strong> (miércoles, viernes y sábado) a ritmo suave conversacional: caminata inclinada, bici o trote ligero, siempre <strong>después de las pesas</strong>. Lunes y jueves sin cardio para proteger la recuperación de pierna (máx. 150–200 min/sem).
+          </p>
+        </div>
+
+        <!-- Rules -->
+        <div class="rounded-2xl bg-white/45 border border-white/75 p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-2 h-2 rounded-full bg-obsidian-900"></span>
+            <h4 class="text-sm font-bold text-obsidian-900">Reglas para que funcione</h4>
+          </div>
+          <ul class="space-y-2 text-xs text-obsidian-800 leading-relaxed">
+            <li><strong class="text-obsidian-900">• Progresión:</strong> Sube peso o repeticiones cada 1–2 semanas y anota todo.</li>
+            <li><strong class="text-obsidian-900">• Nutrición:</strong> Superávit de 200–300 kcal y 1.6–2.2 g de proteína/kg al día.</li>
+            <li><strong class="text-obsidian-900">• Ritmo de peso:</strong> 0.25–0.5% del peso corporal por semana.</li>
+            <li><strong class="text-obsidian-900">• Sueño y Descarga:</strong> 7–9 h de sueño. Mitad de series cada 6–8 semanas.</li>
+          </ul>
+        </div>
+
+        <!-- Direct Sets Table -->
+        <div class="rounded-2xl bg-white/45 border border-white/75 p-4">
+          <h4 class="text-sm font-bold text-obsidian-900 mb-2">Series directas por semana</h4>
+          <div class="divide-y divide-white/60 text-xs">
+            <div class="py-1.5 flex justify-between font-semibold text-obsidian-500">
+              <span>Grupo Muscular</span>
+              <span>Series / Rango</span>
+            </div>
+            <div class="py-1.5 flex justify-between"><span class="font-medium">Pecho (incl. fondos)</span><span class="tabular-nums font-bold text-wine-700">15 <span class="text-obsidian-500 font-normal">(10–16)</span></span></div>
+            <div class="py-1.5 flex justify-between"><span class="font-medium">Espalda</span><span class="tabular-nums font-bold text-wine-700">16 <span class="text-obsidian-500 font-normal">(12–18)</span></span></div>
+            <div class="py-1.5 flex justify-between"><span class="font-medium">Hombros</span><span class="tabular-nums font-bold text-wine-700">13 <span class="text-obsidian-500 font-normal">(8–14)</span></span></div>
+            <div class="py-1.5 flex justify-between"><span class="font-medium">Bíceps</span><span class="tabular-nums font-bold text-wine-700">9 <span class="text-obsidian-500 font-normal">(8–12)</span></span></div>
+            <div class="py-1.5 flex justify-between"><span class="font-medium">Tríceps (directas)</span><span class="tabular-nums font-bold text-wine-700">6 <span class="text-obsidian-500 font-normal">(8–12)</span></span></div>
+            <div class="py-1.5 flex justify-between"><span class="font-medium">Cuádriceps</span><span class="tabular-nums font-bold text-wine-700">10 <span class="text-obsidian-500 font-normal">(8–14)</span></span></div>
+            <div class="py-1.5 flex justify-between"><span class="font-medium">Isquios y glúteos</span><span class="tabular-nums font-bold text-wine-700">12 <span class="text-obsidian-500 font-normal">(8–14)</span></span></div>
+            <div class="py-1.5 flex justify-between"><span class="font-medium">Gemelos</span><span class="tabular-nums font-bold text-wine-700">8 <span class="text-obsidian-500 font-normal">(6–10)</span></span></div>
+            <div class="py-1.5 flex justify-between"><span class="font-medium">Abdomen</span><span class="tabular-nums font-bold text-wine-700">6 <span class="text-obsidian-500 font-normal">(4–8)</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: IPHONE 11 PWA INSTALL INSTRUCTIONS -->
+  <div id="modal-pwa" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 bg-black/25 backdrop-blur-md">
+    <div class="liquid-glass-strong w-full max-w-[420px] rounded-[32px] overflow-hidden flex flex-col animate-enter">
+      <div class="px-5 pt-5 pb-3 border-b border-white/60 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-[0.16em] text-wine-700">iOS · Safari</span>
+          <h3 class="text-[19px] font-extrabold tracking-tight text-obsidian-900 leading-tight">Instalar en tu iPhone 11</h3>
+        </div>
+        <button
+          type="button"
+          onclick="closeModal('modal-pwa')"
+          class="tactile-btn liquid-glass-pill w-9 h-9 rounded-full flex items-center justify-center text-obsidian-900"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs text-obsidian-800 leading-relaxed">
+        <p>
+          Esta aplicación está optimizada como <strong>Progressive Web App (PWA)</strong> para la pantalla de tu iPhone 11, guardando tu progreso localmente sin internet.
+        </p>
+
+        <div class="space-y-2.5">
+          <div class="flex items-start gap-3 p-3 rounded-2xl bg-white/45 border border-white/75">
+            <span class="w-6 h-6 rounded-full bg-obsidian-900 text-white font-bold flex items-center justify-center shrink-0">1</span>
+            <div>
+              <strong class="text-obsidian-900 block">Abre en Safari</strong>
+              Asegúrate de abrir esta página en el navegador Safari de tu iPhone.
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-3 rounded-2xl bg-white/45 border border-white/75">
+            <span class="w-6 h-6 rounded-full bg-wine-600 text-white font-bold flex items-center justify-center shrink-0">2</span>
+            <div>
+              <strong class="text-obsidian-900 block">Toca el botón Compartir</strong>
+              Pulsa el ícono inferior de compartir (cuadro con flecha hacia arriba).
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-3 rounded-2xl bg-white/45 border border-white/75">
+            <span class="w-6 h-6 rounded-full bg-obsidian-900 text-white font-bold flex items-center justify-center shrink-0">3</span>
+            <div>
+              <strong class="text-obsidian-900 block">"Agregar a inicio"</strong>
+              Desliza hacia abajo, elige <em>Agregar a inicio</em> y úsala a pantalla completa.
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onclick="playChime(true); showToast('Sonido de alarma verificado correctamente.');"
+          class="tactile-btn w-full py-3 rounded-2xl liquid-glass-wine text-white font-bold text-xs tracking-wide"
+        >
+          Probar sonido de alerta de 3 min
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * =========================================================================
+     * 1. DATOS COMPLETOS DE LA RUTINA (Extraídos fielmente de Rutina_PPL_6_dias.pdf)
+     * =========================================================================
+     */
+    const ROUTINE_DAYS = [
+      {
+        id: 'lunes',
+        jsDay: 1,
+        shortDay: 'LUN',
+        dayName: 'Lunes',
+        title: 'Pierna 1',
+        subtitle: 'Cuádriceps',
+        hasCardio: false,
+        exercises: [
+          { id: 'lun-1', name: 'Movilidad de tren inferior', prescription: '5–8 min', sets: 1, type: 'warmup' },
+          { id: 'lun-2', name: 'Sentadilla con barra', prescription: '4 × 6–10', sets: 4, type: 'strength' },
+          { id: 'lun-3', name: 'Prensa fija 45°', prescription: '3 × 8–12', sets: 3, type: 'strength' },
+          { id: 'lun-4', name: 'Sillón de cuádriceps unilateral', prescription: '3 × 10–15', sets: 3, type: 'strength' },
+          { id: 'lun-5', name: 'Gemelo sentado', prescription: '4 × 10–15', sets: 4, type: 'strength' },
+          { id: 'lun-6', name: 'Aductores', prescription: '3 × 10–15', sets: 3, type: 'strength' },
+          { id: 'lun-7', name: 'Crunch en polea', prescription: '3 × 10–15', sets: 3, tag: 'NUEVO', type: 'strength' }
+        ]
+      },
+      {
+        id: 'martes',
+        jsDay: 2,
+        shortDay: 'MAR',
+        dayName: 'Martes',
+        title: 'Empuje 1',
+        subtitle: 'Pecho',
+        hasCardio: false,
+        exercises: [
+          { id: 'mar-1', name: 'Movilidad de tren superior', prescription: '5–8 min', sets: 1, type: 'warmup' },
+          { id: 'mar-2', name: 'Press de pecho en banco plano', prescription: '3 × 6–10', sets: 3, type: 'strength' },
+          { id: 'mar-3', name: 'Press con mancuernas en banco inclinado', prescription: '3 × 8–12', sets: 3, type: 'strength' },
+          { id: 'mar-4', name: 'Fondos asistidos', prescription: '3 × 8–12', sets: 3, type: 'strength' },
+          { id: 'mar-5', name: 'Press militar sentado con mancuernas', prescription: '3 × 8–12', sets: 3, type: 'strength' },
+          { id: 'mar-6', name: 'Vuelos laterales', prescription: '3 × 12–15', sets: 3, type: 'strength' },
+          { id: 'mar-7', name: 'Extensión de tríceps sobre la cabeza con cuerda', prescription: '3 × 10–15', sets: 3, tag: 'NUEVO', type: 'strength' }
+        ]
+      },
+      {
+        id: 'miercoles',
+        jsDay: 3,
+        shortDay: 'MIÉ',
+        dayName: 'Miércoles',
+        title: 'Jalón 1 + Cardio',
+        subtitle: 'Dorsales',
+        hasCardio: true,
+        exercises: [
+          { id: 'mie-1', name: 'Movilidad de tren superior', prescription: '5–8 min', sets: 1, type: 'warmup' },
+          { id: 'mie-2', name: 'Jalón al pecho', prescription: '3 × 8–12', sets: 3, type: 'strength' },
+          { id: 'mie-3', name: 'Remo hammer', prescription: '3 × 8–12', sets: 3, type: 'strength' },
+          { id: 'mie-4', name: 'Pullover en polea con brazos rectos', prescription: '3 × 10–15', sets: 3, tag: 'NUEVO', type: 'strength' },
+          { id: 'mie-5', name: 'Face pull posterior', prescription: '3 × 12–15', sets: 3, type: 'strength' },
+          { id: 'mie-6', name: 'Curl de bíceps convergente', prescription: '3 × 10–12', sets: 3, type: 'strength' },
+          { id: 'mie-7', name: 'Curl martillo con mancuernas', prescription: '3 × 10–12', sets: 3, type: 'strength' },
+          { id: 'mie-8', name: 'Cardio suave (después de pesas)', prescription: '25–30 min', sets: 1, type: 'cardio' }
+        ]
+      },
+      {
+        id: 'jueves',
+        jsDay: 4,
+        shortDay: 'JUE',
+        dayName: 'Jueves',
+        title: 'Pierna 2',
+        subtitle: 'Cadena posterior',
+        hasCardio: false,
+        exercises: [
+          { id: 'jue-1', name: 'Movilidad de tren inferior', prescription: '5–8 min', sets: 1, type: 'warmup' },
+          { id: 'jue-2', name: 'Peso muerto rumano', prescription: '4 × 6–10', sets: 4, type: 'strength' },
+          { id: 'jue-3', name: 'Hip thrust', prescription: '4 × 8–12', sets: 4, type: 'strength' },
+          { id: 'jue-4', name: 'Curl femoral tumbado', prescription: '4 × 10–12', sets: 4, type: 'strength' },
+          { id: 'jue-5', name: 'Gemelo de pie', prescription: '4 × 10–15', sets: 4, tag: 'NUEVO', type: 'strength' },
+          { id: 'jue-6', name: 'Aductores', prescription: '3 × 10–15', sets: 3, type: 'strength' },
+          { id: 'jue-7', name: 'Elevación de piernas colgado o en banco', prescription: '3 × 10–15', sets: 3, tag: 'NUEVO', type: 'strength' }
+        ]
+      },
+      {
+        id: 'viernes',
+        jsDay: 5,
+        shortDay: 'VIE',
+        dayName: 'Viernes',
+        title: 'Empuje 2 + Cardio',
+        subtitle: 'Hombros + pecho',
+        hasCardio: true,
+        exercises: [
+          { id: 'vie-1', name: 'Movilidad de tren superior', prescription: '5–8 min', sets: 1, type: 'warmup' },
+          { id: 'vie-2', name: 'Press inclinado en máquina o Smith', prescription: '3 × 8–12', sets: 3, tag: 'NUEVO', type: 'strength' },
+          { id: 'vie-3', name: 'Peck deck', prescription: '3 × 10–15', sets: 3, tag: 'MOVIDO', type: 'strength' },
+          { id: 'vie-4', name: 'Vuelos laterales en polea', prescription: '4 × 12–15', sets: 4, tag: 'NUEVO', type: 'strength' },
+          { id: 'vie-5', name: 'Extensión de codo en polea', prescription: '3 × 10–15', sets: 3, tag: 'MOVIDO', type: 'strength' },
+          { id: 'vie-6', name: 'Cardio suave (después de pesas)', prescription: '25–30 min', sets: 1, type: 'cardio' }
+        ]
+      },
+      {
+        id: 'sabado',
+        jsDay: 6,
+        shortDay: 'SÁB',
+        dayName: 'Sábado',
+        title: 'Jalón 2 + Cardio',
+        subtitle: 'Espalda media',
+        hasCardio: true,
+        exercises: [
+          { id: 'sab-1', name: 'Movilidad de tren superior', prescription: '5–8 min', sets: 1, type: 'warmup' },
+          { id: 'sab-2', name: 'Remo a caballo con barra', prescription: '4 × 6–10', sets: 4, type: 'strength' },
+          { id: 'sab-3', name: 'Remo unilateral con mancuerna', prescription: '3 × 8–12', sets: 3, tag: 'NUEVO', type: 'strength' },
+          { id: 'sab-4', name: 'Encogimientos de hombro', prescription: '3 × 10–15', sets: 3, type: 'strength' },
+          { id: 'sab-5', name: 'Curl de bíceps con barra', prescription: '3 × 8–12', sets: 3, type: 'strength' },
+          { id: 'sab-6', name: 'Cardio suave (después de pesas)', prescription: '25–30 min', sets: 1, type: 'cardio' }
+        ]
+      },
+      {
+        id: 'domingo',
+        jsDay: 0,
+        shortDay: 'DOM',
+        dayName: 'Domingo',
+        title: 'Descanso Total',
+        subtitle: 'Recuperación y crecimiento',
+        hasCardio: false,
+        exercises: [
+          { id: 'dom-1', name: 'Sueño reparador (7–9 horas)', prescription: 'Recuperación SNC', sets: 1, type: 'warmup' },
+          { id: 'dom-2', name: 'Cumplir proteína (1.6–2.2 g/kg) y superávit (+200–300 kcal)', prescription: 'Nutrición', sets: 1, type: 'warmup' },
+          { id: 'dom-3', name: 'Caminata ligera / movilidad opcional', prescription: '15–20 min', sets: 1, type: 'cardio' }
+        ]
+      }
+    ];
+
+    /**
+     * =========================================================================
+     * 2. ESTADO PERSISTENTE EN LOCALSTORAGE
+     * =========================================================================
+     */
+    const STORAGE_KEY = 'ppl_vino_pwa_state_v1';
+
+    let appState = {
+      selectedDayId: null, // Inicia en null para que el usuario seleccione su día inicialmente
+      completedSets: {},   // { [exerciseId]: [true, false, ...] }
+      weights: {},         // { [exerciseId]: "60 kg" }
+      soundEnabled: true
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          appState = {
+            ...appState,
+            ...parsed,
+            selectedDayId: null // Siempre mostrar el selector de día al iniciar la app
+          };
+        }
+      } catch (e) {
+        console.warn('No se pudo leer localStorage:', e);
+      }
+    }
+
+    function saveState() {
+      try {
+        const toSave = {
+          completedSets: appState.completedSets,
+          weights: appState.weights,
+          soundEnabled: appState.soundEnabled
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+      } catch (e) {
+        console.warn('No se pudo guardar en localStorage:', e);
+      }
+    }
+
+    function getExerciseSetsArray(exercise) {
+      const existing = appState.completedSets[exercise.id];
+      if (Array.isArray(existing) && existing.length === exercise.sets) {
+        return existing;
+      }
+      return Array(exercise.sets).fill(false);
+    }
+
+    function isExerciseComplete(exercise) {
+      const arr = getExerciseSetsArray(exercise);
+      return arr.length > 0 && arr.every(Boolean);
+    }
+
+    /**
+     * =========================================================================
+     * 3. MOTOR DE AUDIO WEB (Compatible con políticas de Safari iOS / iPhone 11)
+     * =========================================================================
+     */
+    let audioCtx = null;
+    let alarmRepeatInterval = null;
+
+    function unlockAudioContext() {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        if (!audioCtx) {
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      } catch (err) {
+        console.warn('AudioContext init error:', err);
+      }
+    }
+
+    // Desbloquear audio en el primer toque del usuario en iPhone
+    document.addEventListener('touchstart', unlockAudioContext, { passive: true });
+    document.addEventListener('click', unlockAudioContext, { passive: true });
+
+    function playChime(force = false) {
+      if (!appState.soundEnabled && !force) return;
+      try {
+        unlockAudioContext();
+        if (!audioCtx) return;
+
+        const now = audioCtx.currentTime;
+        // Acorde armónico cristalino (C5 - E5 - G5 - C6)
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+
+        notes.forEach((freq, idx) => {
+          const startTime = now + idx * 0.11;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, startTime);
+
+          gain.gain.setValueAtTime(0.0001, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.32, startTime + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.65);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start(startTime);
+          osc.stop(startTime + 0.68);
+        });
+
+        if (navigator.vibrate) {
+          navigator.vibrate([180, 90, 180, 90, 260]);
+        }
+      } catch (err) {
+        console.warn('Error reproduciendo sonido:', err);
+      }
+    }
+
+    function startAlarmLoop() {
+      stopAlarmLoop();
+      playChime();
+      let repeats = 0;
+      alarmRepeatInterval = setInterval(() => {
+        repeats++;
+        if (repeats >= 4) {
+          stopAlarmLoop();
+          return;
+        }
+        playChime();
+      }, 1700);
+    }
+
+    function stopAlarmLoop() {
+      if (alarmRepeatInterval) {
+        clearInterval(alarmRepeatInterval);
+        alarmRepeatInterval = null;
+      }
+    }
+
+    function toggleSound() {
+      appState.soundEnabled = !appState.soundEnabled;
+      saveState();
+      renderSoundButton();
+      if (appState.soundEnabled) {
+        playChime(true);
+        showToast('Sonido activado para el descanso de 3 min');
+      } else {
+        stopAlarmLoop();
+        showToast('Sonido silenciado');
+      }
+    }
+
+    function renderSoundButton() {
+      const btn = document.getElementById('btn-sound-toggle');
+      if (!btn) return;
+      if (appState.soundEnabled) {
+        btn.innerHTML = `
+          <svg class="w-4 h-4 text-wine-600" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+        `;
+      } else {
+        btn.innerHTML = `
+          <svg class="w-4 h-4 text-obsidian-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+        `;
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 4. CRONÓMETRO DE DESCANSO DE 3 MINUTOS (Basado en Date.now() para iOS)
+     * =========================================================================
+     */
+    const REST_DEFAULT_SECONDS = 180; // 3 minutos exactos
+    const RING_CIRCUMFERENCE = 2 * Math.PI * 20; // r=20 -> 125.66
+
+    let timerState = {
+      status: 'idle', // 'idle' | 'running' | 'finished'
+      totalSeconds: REST_DEFAULT_SECONDS,
+      endTime: null,
+      intervalId: null
+    };
+
+    function formatMMSS(totalSec) {
+      const clamped = Math.max(0, Math.ceil(totalSec));
+      const mins = Math.floor(clamped / 60);
+      const secs = clamped % 60;
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function startRestTimer(seconds = REST_DEFAULT_SECONDS) {
+      unlockAudioContext();
+      stopAlarmLoop();
+
+      if (timerState.intervalId) {
+        clearInterval(timerState.intervalId);
+      }
+
+      timerState.status = 'running';
+      timerState.totalSeconds = seconds;
+      timerState.endTime = Date.now() + seconds * 1000;
+
+      updateTimerUI();
+      timerState.intervalId = setInterval(tickRestTimer, 200);
+    }
+
+    function addTimerSeconds(extraSec) {
+      unlockAudioContext();
+      stopAlarmLoop();
+
+      if (timerState.status === 'finished') {
+        startRestTimer(extraSec);
+        return;
+      }
+
+      if (timerState.status === 'running' && timerState.endTime) {
+        timerState.endTime += extraSec * 1000;
+        timerState.totalSeconds += extraSec;
+        tickRestTimer();
+      }
+    }
+
+    function stopRestTimer() {
+      stopAlarmLoop();
+      if (timerState.intervalId) {
+        clearInterval(timerState.intervalId);
+        timerState.intervalId = null;
+      }
+      timerState.status = 'idle';
+      timerState.endTime = null;
+      updateTimerUI();
+    }
+
+    function tickRestTimer() {
+      if (timerState.status !== 'running' || !timerState.endTime) return;
+
+      const remainingMs = timerState.endTime - Date.now();
+      const remainingSec = remainingMs / 1000;
+
+      if (remainingSec <= 0) {
+        clearInterval(timerState.intervalId);
+        timerState.intervalId = null;
+        timerState.status = 'finished';
+        updateTimerUI();
+        startAlarmLoop();
+        return;
+      }
+
+      updateTimerUI(remainingSec);
+    }
+
+    function updateTimerUI(remainingSec = timerState.totalSeconds) {
+      const dock = document.getElementById('timer-dock');
+      const idleView = document.getElementById('timer-idle-view');
+      const activeView = document.getElementById('timer-active-view');
+      const display = document.getElementById('timer-display');
+      const label = document.getElementById('timer-label');
+      const ring = document.getElementById('timer-ring-progress');
+
+      if (timerState.status === 'idle') {
+        dock.classList.remove('alarm-ringing');
+        idleView.classList.remove('hidden');
+        activeView.classList.add('hidden');
+        return;
+      }
+
+      idleView.classList.add('hidden');
+      activeView.classList.remove('hidden');
+
+      if (timerState.status === 'running') {
+        dock.classList.remove('alarm-ringing');
+        label.textContent = 'Recuperando serie · 3:00';
+        label.className = 'text-[11px] font-bold uppercase tracking-[0.1em] text-wine-600';
+        display.textContent = formatMMSS(remainingSec);
+        display.className = 'text-[28px] font-extrabold tracking-tight tabular-nums text-obsidian-900 leading-none mt-0.5';
+
+        const ratio = Math.max(0, Math.min(1, remainingSec / timerState.totalSeconds));
+        const offset = RING_CIRCUMFERENCE * (1 - ratio);
+        ring.style.strokeDashoffset = offset;
+        ring.style.stroke = '#6E0D25';
+      } else if (timerState.status === 'finished') {
+        dock.classList.add('alarm-ringing');
+        label.textContent = '¡Tiempo cumplido! Siguiente serie';
+        label.className = 'text-[11px] font-extrabold uppercase tracking-[0.08em] text-wine-600';
+        display.textContent = '00:00';
+        display.className = 'text-[28px] font-extrabold tracking-tight tabular-nums text-wine-600 leading-none mt-0.5';
+        ring.style.strokeDashoffset = RING_CIRCUMFERENCE;
+      }
+    }
+
+    // Recalcular inmediatamente al volver de pantalla bloqueada en iPhone
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && timerState.status === 'running') {
+        tickRestTimer();
+      }
+    });
+
+    /**
+     * =========================================================================
+     * 5. NAVEGACIÓN Y RENDERIZADO DE VISTAS
+     * =========================================================================
+     */
+    function selectDay(dayId) {
+      appState.selectedDayId = dayId;
+      cancelResetDay();
+      renderHeader();
+      renderWorkoutView();
+
+      document.getElementById('view-selector').classList.add('hidden');
+      const workoutView = document.getElementById('view-workout');
+      workoutView.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showDaySelector() {
+      appState.selectedDayId = null;
+      renderHeader();
+      renderDaySelector();
+
+      document.getElementById('view-workout').classList.add('hidden');
+      const selectorView = document.getElementById('view-selector');
+      selectorView.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderHeader() {
+      const backBtn = document.getElementById('btn-back-days');
+      const kicker = document.getElementById('header-kicker');
+      const title = document.getElementById('header-title');
+
+      if (!appState.selectedDayId) {
+        backBtn.classList.add('hidden');
+        kicker.textContent = 'RUTINA PPL · 6 DÍAS';
+        title.textContent = 'Selecciona tu día';
+      } else {
+        const day = ROUTINE_DAYS.find(d => d.id === appState.selectedDayId);
+        backBtn.classList.remove('hidden');
+        kicker.textContent = `${day.dayName.toUpperCase()} · CAMBIAR DÍA`;
+        title.textContent = `${day.title}`;
+      }
+    }
+
+    function renderDaySelector() {
+      const todayJsDay = new Date().getDay(); // 0 = Dom, 1 = Lun ... 6 = Sáb
+      const todayPlan = ROUTINE_DAYS.find(d => d.jsDay === todayJsDay) || ROUTINE_DAYS[0];
+
+      // Sugerencia del día actual
+      const suggestionBox = document.getElementById('today-suggestion-box');
+      suggestionBox.innerHTML = `
+        <div class="min-w-0">
+          <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-obsidian-500 block">Hoy corresponde</span>
+          <span class="text-[13.5px] font-bold tracking-tight text-obsidian-900 truncate block mt-0.5">${todayPlan.dayName}: ${todayPlan.title} (${todayPlan.subtitle})</span>
+        </div>
+        <button
+          type="button"
+          onclick="selectDay('${todayPlan.id}')"
+          class="tactile-btn liquid-glass-obsidian shrink-0 px-4 py-2 rounded-full text-white text-xs font-bold flex items-center gap-1.5"
+        >
+          <span>Entrenar</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      `;
+
+      // Lista de todos los días
+      const list = document.getElementById('days-list');
+      list.innerHTML = ROUTINE_DAYS.map(day => {
+        const totalEx = day.exercises.length;
+        const doneEx = day.exercises.filter(isExerciseComplete).length;
+        const isToday = day.jsDay === todayJsDay;
+        const isAllDone = doneEx === totalEx && totalEx > 0;
+
+        return `
+          <button
+            type="button"
+            onclick="selectDay('${day.id}')"
+            class="tactile-btn w-full text-left liquid-glass rounded-[26px] p-4 flex items-center justify-between gap-3 overflow-hidden ${isToday ? 'ring-1 ring-wine-600/45' : ''}"
+          >
+            <div class="flex items-center gap-3.5 min-w-0">
+              <!-- Day Badge -->
+              <div class="w-12 h-12 rounded-[18px] flex flex-col items-center justify-center shrink-0 ${
+                isAllDone
+                  ? 'liquid-glass-wine text-white'
+                  : isToday
+                    ? 'liquid-glass-obsidian text-white'
+                    : 'liquid-glass-pill text-obsidian-900'
+              }">
+                <span class="text-[10px] font-extrabold tracking-widest">${day.shortDay}</span>
+                ${
+                  isAllDone
+                    ? `<svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`
+                    : `<span class="text-[11px] font-semibold opacity-80 tabular-nums">${doneEx}/${totalEx}</span>`
+                }
+              </div>
+
+              <!-- Day Info -->
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="text-[15px] font-bold tracking-tight text-obsidian-900 truncate leading-tight">${day.dayName} · ${day.title}</span>
+                  ${isToday ? '<span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-wine-600 text-white shrink-0 shadow-sm">Hoy</span>' : ''}
+                </div>
+                <div class="flex items-center gap-2 mt-0.5 text-xs text-obsidian-700">
+                  <span class="font-medium text-obsidian-800">${day.subtitle}</span>
+                  <span>•</span>
+                  <span class="tabular-nums">${totalEx} bloques</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Chevron -->
+            <div class="liquid-glass-pill w-8 h-8 rounded-full flex items-center justify-center text-obsidian-800 shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderWorkoutView() {
+      const day = ROUTINE_DAYS.find(d => d.id === appState.selectedDayId);
+      if (!day) return;
+
+      const totalEx = day.exercises.length;
+      const doneEx = day.exercises.filter(isExerciseComplete).length;
+      const pct = totalEx > 0 ? Math.round((doneEx / totalEx) * 100) : 0;
+
+      document.getElementById('workout-day-badge').textContent = day.dayName.toUpperCase();
+      document.getElementById('workout-day-focus').textContent = `${day.title} · ${day.subtitle}`;
+      document.getElementById('workout-progress-text').textContent = `${pct}%`;
+      document.getElementById('workout-progress-count').textContent = `${doneEx} de ${totalEx} listos`;
+      document.getElementById('workout-progress-bar').style.width = `${pct}%`;
+
+      const container = document.getElementById('exercises-list');
+      container.innerHTML = day.exercises.map((ex, index) => {
+        const setsArr = getExerciseSetsArray(ex);
+        const completed = isExerciseComplete(ex);
+        const savedWeight = appState.weights[ex.id] || '';
+
+        // Tag pill (NUEVO / MOVIDO)
+        let tagHtml = '';
+        if (ex.tag === 'NUEVO') {
+          tagHtml = `<span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-wine-600/12 text-wine-700 border border-wine-600/20">NUEVO</span>`;
+        } else if (ex.tag === 'MOVIDO') {
+          tagHtml = `<span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-obsidian-900 text-white">MOVIDO</span>`;
+        } else if (ex.type === 'warmup') {
+          tagHtml = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-black/[0.06] text-obsidian-500">MOVILIDAD</span>`;
+        } else if (ex.type === 'cardio') {
+          tagHtml = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-wine-600 text-white">CARDIO</span>`;
+        }
+
+        // Individual Set Pills (S1, S2, S3...)
+        const setsPillsHtml = ex.sets > 1
+          ? `
+            <div class="mt-3 pt-3 border-t border-white/60 flex items-center justify-between gap-2 flex-wrap">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                ${setsArr.map((isDone, sIdx) => `
+                  <button
+                    type="button"
+                    onclick="toggleSingleSet('${ex.id}', ${sIdx})"
+                    aria-label="Serie ${sIdx + 1} de ${ex.name}"
+                    class="tactile-btn h-9 min-w-[44px] px-2.5 rounded-xl text-xs font-extrabold tabular-nums flex items-center justify-center gap-1 transition-all ${
+                      isDone
+                        ? 'liquid-glass-wine text-white'
+                        : 'liquid-glass-pill text-obsidian-900 hover:border-wine-600/50'
+                    }"
+                  >
+                    <span>S${sIdx + 1}</span>
+                    ${isDone ? '<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
+                  </button>
+                `).join('')}
+              </div>
+
+              <!-- Optional weight/note input for progression rule -->
+              <input
+                type="text"
+                value="${escapeHtml(savedWeight)}"
+                onchange="saveExerciseWeight('${ex.id}', this.value)"
+                placeholder="Peso / nota"
+                aria-label="Peso o nota para ${ex.name}"
+                class="w-24 h-9 px-2.5 rounded-xl bg-white/40 backdrop-blur-md border border-white/80 text-xs font-semibold text-obsidian-900 placeholder:text-obsidian-500 focus:outline-none focus:border-wine-600 text-right tabular-nums shadow-inner"
+              />
+            </div>
+          `
+          : '';
+
+        return `
+          <div class="liquid-glass rounded-[26px] p-4 transition-all duration-300 ${completed ? 'opacity-70' : ''}">
+            <div class="flex items-start gap-3">
+              <!-- Master Exercise Checkbox -->
+              <button
+                type="button"
+                onclick="toggleWholeExercise('${ex.id}')"
+                aria-label="Marcar ejercicio ${ex.name}"
+                class="tactile-btn mt-0.5 w-7 h-7 rounded-[10px] flex items-center justify-center shrink-0 transition-all ${
+                  completed
+                    ? 'liquid-glass-obsidian text-white'
+                    : 'liquid-glass-pill text-transparent hover:border-wine-600'
+                }"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </button>
+
+              <!-- Exercise Title & Prescription -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap mb-1">
+                  <span class="text-[11px] font-bold tabular-nums text-obsidian-500">#${index + 1}</span>
+                  ${tagHtml}
+                </div>
+
+                <h3 class="text-[15.5px] font-bold tracking-tight leading-snug transition-all ${
+                  completed ? 'line-through text-obsidian-500' : 'text-obsidian-900'
+                }">
+                  ${ex.name}
+                </h3>
+
+                <div class="mt-1 flex items-center gap-2">
+                  <span class="liquid-glass-pill inline-flex items-center px-2.5 py-0.5 rounded-lg text-obsidian-900 text-xs font-extrabold tabular-nums">
+                    ${ex.prescription}
+                  </span>
+                  ${
+                    ex.sets > 1
+                      ? `<span class="text-[11px] font-semibold text-obsidian-700 tabular-nums">${setsArr.filter(Boolean).length}/${ex.sets} series</span>`
+                      : ''
+                  }
+                </div>
+              </div>
+            </div>
+
+            ${setsPillsHtml}
+          </div>
+        `;
+      }).join('');
+    }
+
+    /**
+     * =========================================================================
+     * 6. ACCIONES DE CHECKLIST & PROGRESO
+     * =========================================================================
+     */
+    function findExerciseById(exId) {
+      for (const day of ROUTINE_DAYS) {
+        const found = day.exercises.find(e => e.id === exId);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    function toggleSingleSet(exId, setIndex) {
+      const ex = findExerciseById(exId);
+      if (!ex) return;
+
+      const arr = [...getExerciseSetsArray(ex)];
+      arr[setIndex] = !arr[setIndex];
+      appState.completedSets[exId] = arr;
+      saveState();
+      renderWorkoutView();
+    }
+
+    function toggleWholeExercise(exId) {
+      const ex = findExerciseById(exId);
+      if (!ex) return;
+
+      const currentlyComplete = isExerciseComplete(ex);
+      appState.completedSets[exId] = Array(ex.sets).fill(!currentlyComplete);
+      saveState();
+      renderWorkoutView();
+    }
+
+    function saveExerciseWeight(exId, value) {
+      appState.weights[exId] = value.trim();
+      saveState();
+    }
+
+    function askResetDay() {
+      document.getElementById('btn-reset-prompt').classList.add('hidden');
+      document.getElementById('reset-confirm-group').classList.remove('hidden');
+    }
+
+    function cancelResetDay() {
+      document.getElementById('btn-reset-prompt').classList.remove('hidden');
+      document.getElementById('reset-confirm-group').classList.add('hidden');
+    }
+
+    function confirmResetDay() {
+      const day = ROUTINE_DAYS.find(d => d.id === appState.selectedDayId);
+      if (!day) return;
+
+      day.exercises.forEach(ex => {
+        appState.completedSets[ex.id] = Array(ex.sets).fill(false);
+      });
+      saveState();
+      cancelResetDay();
+      renderWorkoutView();
+      showToast(`Checklist de ${day.dayName} reiniciado`);
+    }
+
+    /**
+     * =========================================================================
+     * 7. MODALES, TOAST & CONFIGURACIÓN PWA OFFLINE
+     * =========================================================================
+     */
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    }
+
+    let toastTimeout = null;
+    function showToast(msg) {
+      const container = document.getElementById('toast-container');
+      const textEl = document.getElementById('toast-message');
+      if (!container || !textEl) return;
+
+      textEl.textContent = msg;
+      container.classList.remove('opacity-0', '-translate-y-2');
+      container.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        container.classList.remove('opacity-100', 'translate-y-0');
+        container.classList.add('opacity-0', '-translate-y-2');
+      }, 2600);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function initPWA() {
+      // 1. Generar Manifest dinámico en línea para instalación PWA en iOS/Android
+      try {
+        const manifest = {
+          name: 'PPL · Vino — Rutina 6 Días',
+          short_name: 'PPL · Vino',
+          description: 'Rutina Pierna Empuje Jalón 6 días con checklist y cronómetro de 3 minutos.',
+          start_url: '.',
+          display: 'standalone',
+          orientation: 'portrait',
+          background_color: '#F7F4F5',
+          theme_color: '#6E0D25',
+          icons: [
+            {
+              src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%236E0D25'/%3E%3Ctext x='256' y='295' font-family='-apple-system,sans-serif' font-size='150' font-weight='800' fill='%23FFFFFF' text-anchor='middle'%3EPPL%3C/text%3E%3C/svg%3E",
+              sizes: '512x512',
+              type: 'image/svg+xml',
+              purpose: 'any maskable'
+            }
+          ]
+        };
+        const encoded = encodeURIComponent(JSON.stringify(manifest));
+        const manifestLink = document.getElementById('pwa-manifest');
+        if (manifestLink) {
+          manifestLink.setAttribute('href', `data:application/manifest+json,${encoded}`);
+        }
+      } catch (e) {
+        console.warn('Manifest init skipped:', e);
+      }
+
+      // 2. Registrar Service Worker ligero vía Blob si el entorno lo soporta
+      try {
+        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+          const swCode = `
+            const CACHE = 'ppl-vino-v1';
+            self.addEventListener('install', e => self.skipWaiting());
+            self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+            self.addEventListener('fetch', e => {
+              e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+            });
+          `;
+          const blob = new Blob([swCode], { type: 'application/javascript' });
+          const swUrl = URL.createObjectURL(blob);
+          navigator.serviceWorker.register(swUrl).catch(() => {});
+        }
+      } catch (e) {
+        // Silencioso en entornos sandboxed
+      }
+    }
+
+    // Inicialización al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      initPWA();
+      renderSoundButton();
+      renderHeader();
+      renderDaySelector();
+      updateTimerUI();
+    });
+  </script>
+</body>
+</html>
